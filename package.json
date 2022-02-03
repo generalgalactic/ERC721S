@@ -18,7 +18,7 @@
     "@openzeppelin/test-helpers": "^0.5.15",
     "@tenderly/hardhat-tenderly": "^1.0.10",
     "chai": "^4.2.0",
-    "chalk": "^4.1.0",
+    "chalk": "^5.0.0",
     "dotenv": "^16.0.0",
     "ethereum-waffle": "^3.1.1",
     "ethers": "^5.4.4",
