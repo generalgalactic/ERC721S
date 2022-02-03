@@ -1,0 +1,19 @@
+node_modules
+.env
+coverage
+coverage.json
+typechain
+
+#Hardhat files
+cache
+artifacts
+
+#ignore account files
+*.txt
+.DS_Store
+
+NEED_A_DIRECTORY
+*_DEPLOY
+*.svg
+deployments
+floppies
