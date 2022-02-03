@@ -1,1 +1,1 @@
-# ERC721S
+# ERC721Sequential
