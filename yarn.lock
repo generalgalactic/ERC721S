@@ -550,10 +550,10 @@
   resolved "https://registry.yarnpkg.com/hardhat-deploy-ethers/-/hardhat-deploy-ethers-0.3.0-beta.13.tgz#b96086ff768ddf69928984d5eb0a8d78cfca9366"
   integrity sha512-PdWVcKB9coqWV1L7JTpfXRCI91Cgwsm7KLmBcwZ8f0COSm1xtABHZTyz3fvF6p42cTnz1VM0QnfDvMFlIRkSNw==
 
-"@nomiclabs/hardhat-etherscan@^2.1.7":
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/@nomiclabs/hardhat-etherscan/-/hardhat-etherscan-2.1.8.tgz#e206275e96962cd15e5ba9148b44388bc922d8c2"
-  integrity sha512-0+rj0SsZotVOcTLyDOxnOc3Gulo8upo0rsw/h+gBPcmtj91YqYJNhdARHoBxOhhE8z+5IUQPx+Dii04lXT14PA==
+"@nomiclabs/hardhat-etherscan@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@nomiclabs/hardhat-etherscan/-/hardhat-etherscan-3.0.0.tgz#06e0d59787f01f1296d829e8d43fece50e7ffff1"
+  integrity sha512-E5s35dCHmzuY6pFqlgTdDGQr2xIyUJ3f91m6e7HYlPGz0FGzad9Nem/y0L7L3FHG4LPYg1UObkQVUzqBjtyAOA==
   dependencies:
     "@ethersproject/abi" "^5.1.2"
     "@ethersproject/address" "^5.0.2"
