@@ -362,11 +362,11 @@ contract ERC721Sequential is Context, ERC165, IERC721, IERC721Metadata {
      * forwarded in {IERC721Receiver-onERC721Received} to contract recipients.
      */
     function _safeMint(address to, bytes memory _data) internal virtual {
+        _mint(to);
         require(
             _checkOnERC721Received(address(0), to, _tokens.length, _data),
             "ERC721: transfer to non ERC721Receiver implementer"
         );
-        _mint(to);
     }
 
     /**
