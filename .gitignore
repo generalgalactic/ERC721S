@@ -17,3 +17,4 @@ NEED_A_DIRECTORY
 *.svg
 deployments
 floppies
+yarn-error.log
