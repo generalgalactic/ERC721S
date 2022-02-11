@@ -7,17 +7,17 @@ describe("ERC721S Metadata", function () {
     let minter1;
 
     beforeEach(async () => {
-        const ERC721Stub = await ethers.getContractFactory("ERC721Stub");
-        contract = await ERC721Stub.deploy("ERC721Stub", "STUB");
+        const ERC721SImpl = await ethers.getContractFactory("ERC721SImpl");
+        contract = await ERC721SImpl.deploy("ERC721Impl", "IMPL");
         [deployer, minter1] = await ethers.getSigners();
     });
 
     it("has a name", async () => {
-        expect(await contract.name()).to.be.equal("ERC721Stub");
+        expect(await contract.name()).to.be.equal("ERC721Impl");
     });
 
     it("has a symbol", async () => {
-        expect(await contract.symbol()).to.be.equal("STUB");
+        expect(await contract.symbol()).to.be.equal("IMPL");
     });
 
     describe("tokenURI", function () {

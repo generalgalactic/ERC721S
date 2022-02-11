@@ -1,17 +1,21 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import '../ERC721S.sol';
+import './ERC721S.sol';
 
-contract ERC721Stub is ERC721Sequential {
+contract ERC721SImpl is ERC721Sequential {
     string public baseURI;
 
-    constructor(string memory name, string memory symbol) ERC721Sequential(name, symbol) {}
+    constructor(string memory _name, string memory _symbol) ERC721Sequential(_name, _symbol) {}
 
-    function mint(uint256 numTokens) public payable {
-        for (uint256 i = 0; i < numTokens; i++) {
+    function mint(uint256 _numTokens) public payable {
+        for (uint256 i = 0; i < _numTokens; i++) {
             _safeMint(msg.sender);
         }
+    }
+
+    function mintToAddress(address _to) public payable {
+        _safeMint(_to);
     }
 
     function _baseURI() internal view virtual override returns (string memory) {

@@ -8,8 +8,8 @@ describe("ERC721S Minted", function () {
     let minter2;
 
     beforeEach(async () => {
-        const ERC721Stub = await ethers.getContractFactory("ERC721Stub");
-        contract = await ERC721Stub.deploy("ERC721Stub", "STUB");
+        const ERC721SImpl = await ethers.getContractFactory("ERC721SImpl");
+        contract = await ERC721SImpl.deploy("ERC721Impl", "IMPL");
         [deployer, minter1, minter2] = await ethers.getSigners();
     });
 
