@@ -49,4 +49,26 @@ describe("ERC721S Misc", function () {
                 .to.be.reverted;
         });
     });
+
+    describe("supportsInterface", function () {
+        it("returns true for ERC721", async() => {
+            const erc721InterfaceId = 0x80ac58cd;
+            expect(await contract.supportsInterface(erc721InterfaceId)).to.be.equal(true);
+        });
+
+        it("returns true for ERC721-metadata", async() => {
+            const erc721MetadataInterfaceId = 0x5b5e139f;
+            expect(await contract.supportsInterface(erc721MetadataInterfaceId)).to.be.equal(true);
+        });
+
+        it("returns true for ERC165", async() => {
+            const erc165InterfaceId = 0x01ffc9a7
+            expect(await contract.supportsInterface(erc165InterfaceId)).to.be.equal(true);
+        });
+
+        it("returns false for invalid id", async() => {
+            const erc165InterfaceId = 0x01ffc9a7
+            expect(await contract.supportsInterface(0xffffffff)).to.be.equal(false);
+        });
+    });
 });
