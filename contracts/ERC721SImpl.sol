@@ -18,6 +18,10 @@ contract ERC721SImpl is ERC721Sequential {
         _safeMint(_to);
     }
 
+    function burn(uint256 tokenId) public {
+        _burn(tokenId);
+    }
+
     function _baseURI() internal view virtual override returns (string memory) {
         return baseURI;
     }
