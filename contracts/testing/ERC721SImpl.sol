@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import './ERC721S.sol';
+import '../ERC721S.sol';
 
 contract ERC721SImpl is ERC721Sequential {
     string public baseURI;
