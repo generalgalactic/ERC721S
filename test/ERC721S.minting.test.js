@@ -4,28 +4,28 @@ const { ethers } = require("hardhat");
 describe("ERC721S Minting", function () {
     let contract;
     let deployer;
-    let minter1;
+    let minter;
 
     beforeEach(async () => {
         const ERC721SImpl = await ethers.getContractFactory("ERC721SImpl");
         contract = await ERC721SImpl.deploy("ERC721Impl", "IMPL");
-        [deployer, minter1, minter2] = await ethers.getSigners();
+        [deployer, minter] = await ethers.getSigners();
     });
 
     describe("Minting", function () {
         it("associates minted token with minter and increases the minter's balance", async () => {
-            await contract.connect(minter1).mint(1);
+            await contract.connect(minter).mint(1);
 
             expect(await contract.ownerOf(1))
-                .to.be.equal(minter1.address);
-            expect(await contract.balanceOf(minter1.address))
+                .to.be.equal(minter.address);
+            expect(await contract.balanceOf(minter.address))
                 .to.be.equal(1);
         });
 
         it("emits a transfer event on mint", async () => {
-            await expect(contract.connect(minter1).mint(1))
+            await expect(contract.connect(minter).mint(1))
                 .to.emit(contract, "Transfer")
-                .withArgs(ethers.constants.AddressZero, minter1.address, 1);
+                .withArgs(ethers.constants.AddressZero, minter.address, 1);
         });
 
         it("cannot mint to address 0", async () => {
@@ -39,9 +39,9 @@ describe("ERC721S Minting", function () {
             const ERC721ValidReceiverStub = await ethers.getContractFactory("ERC721ValidReceiverStub");
             receiverStub = await ERC721ValidReceiverStub.deploy();
 
-            await expect(contract.connect(minter1).mintToAddress(receiverStub.address))
+            await expect(contract.connect(minter).mintToAddress(receiverStub.address))
                 .to.emit(receiverStub, "Received")
-                .withArgs(minter1.address, ethers.constants.AddressZero, 1, ethers.utils.toUtf8Bytes(""));
+                .withArgs(minter.address, ethers.constants.AddressZero, 1, ethers.utils.toUtf8Bytes(""));
 
             expect(await contract.ownerOf(1))
                 .to.be.equal(receiverStub.address);
@@ -49,7 +49,7 @@ describe("ERC721S Minting", function () {
                 .to.be.equal(1);
         });
 
-        it("reverts if receiving contract does not have a valid onERC721Received function", async () => {
+        it("reverts if receiving contract does not have a onERC721Received function", async () => {
             const ERC721EmptyReceiverStub = await ethers.getContractFactory("ERC721EmptyReceiverStub");
             receiverStub = await ERC721EmptyReceiverStub.deploy();
 
@@ -71,6 +71,24 @@ describe("ERC721S Minting", function () {
 
             await expect(contract.mintToAddress(receiverStub.address))
                 .to.be.revertedWith("revert message");
+        });
+
+        it("reverts if receiving contract returns an invalid response", async() => {
+            const ERC721InvalidReceiverStub = await ethers.getContractFactory("ERC721InvalidReceiverStub");
+            receiverStub = await ERC721InvalidReceiverStub.deploy();
+
+            await expect(contract.mintToAddress(receiverStub.address))
+                .to.be.reverted;
+
+        });
+
+        it("reverts if receiving contract panics", async() => {
+            const ERC721PanicReceiverStub = await ethers.getContractFactory("ERC721PanicReceiverStub");
+            receiverStub = await ERC721PanicReceiverStub.deploy();
+
+            await expect(contract.mintToAddress(receiverStub.address))
+                .to.be.reverted;
+
         });
     });
 });

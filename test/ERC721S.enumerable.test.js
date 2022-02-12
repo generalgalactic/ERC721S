@@ -14,7 +14,7 @@ describe("ERC721S Enumerable", function () {
     });
 
     describe("tokenOwnerByIndex", function () {
-        it("returns token id for owner in a owner-specific array by index", async () => {
+        it("returns token id for owner in an owner-specific array by index", async () => {
             await contract.connect(minter1).mint(1);
             await contract.connect(minter2).mint(1);
             await contract.connect(minter1).mint(1);

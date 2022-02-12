@@ -4,12 +4,12 @@ const { ethers } = require("hardhat");
 describe("ERC721S Metadata", function () {
     let contract;
     let deployer;
-    let minter1;
+    let minter;
 
     beforeEach(async () => {
         const ERC721SImpl = await ethers.getContractFactory("ERC721SImpl");
         contract = await ERC721SImpl.deploy("ERC721Impl", "IMPL");
-        [deployer, minter1] = await ethers.getSigners();
+        [deployer, minter] = await ethers.getSigners();
     });
 
     it("has a name", async () => {
@@ -22,7 +22,7 @@ describe("ERC721S Metadata", function () {
 
     describe("tokenURI", function () {
         it("returns an empty string if no baseURI is set", async () => {
-            await contract.connect(minter1).mint(1);
+            await contract.connect(minter).mint(1);
 
             expect(await contract.tokenURI(1))
                 .to.be.equal("");
@@ -35,7 +35,7 @@ describe("ERC721S Metadata", function () {
         });
 
         it("tokenURI can be updated by updating baseURI", async () => {
-            await contract.connect(minter1).mint(1);
+            await contract.connect(minter).mint(1);
 
             await contract.setBaseURI("https://example.org/token/v1/");
 
