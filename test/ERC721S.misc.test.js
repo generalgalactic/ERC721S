@@ -1,7 +1,7 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("ERC721S Minted", function () {
+describe("ERC721S Misc", function () {
     let contract;
     let deployer;
     let minter1;
