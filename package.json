@@ -23,7 +23,7 @@
     "ethers": "^5.4.4",
     "hardhat": "2.8.4",
     "hardhat-deploy": "^0.10.5",
-    "hardhat-gas-reporter": "^1.0.4",
+    "hardhat-gas-reporter": "^1.0.8",
     "node-watch": "^0.7.0",
     "qrcode-terminal": "^0.12.0",
     "ramda": "^0.28.0"
