@@ -38,6 +38,22 @@ contract ERC721Sequential is Context, ERC165, IERC721, IERC721Metadata {
 
     // Mapping from owner to operator approvals
     mapping(address => mapping(address => bool)) private _operatorApprovals;
+    
+    // Custom Errors
+    error BalanceQueryForZeroAddress();
+    error OwnerIndexOutOfBounds();
+    error ApprovalToCurrentOwner();
+    error URIQueryForNonExistentToken();
+    error OwnerQueryForNonExistentToken();
+    error ApproveToCaller();
+    error ApprovedQueryForNonExistentToken();
+    error TransferCallerIsNotOwnerNorApproved();
+    error TransferToNonERC721ReceiverImplementer();
+    error ApproveCallerIsNotOwnerNorApprovedForAll();
+    error OperatorQueryForNonExistentToken();
+    error TransferOfTokenThatIsNotOwn();
+    error TransferToTheZeroAddress();
+    error MintToTheZeroAddress();
 
     /**
      * @dev Initializes the contract by setting a `name` and a `symbol` to the token collection.
@@ -90,7 +106,7 @@ contract ERC721Sequential is Context, ERC165, IERC721, IERC721Metadata {
                 currentIndex += 1;
             }
         }
-        revert("ERC721Enumerable: owner index out of bounds");
+        revert OwnerIndexOutOfBounds();
     }
 
     /**
@@ -103,10 +119,9 @@ contract ERC721Sequential is Context, ERC165, IERC721, IERC721Metadata {
         override
         returns (uint256)
     {
-        require(
-            owner != address(0),
-            "ERC721: balance query for the zero address"
-        );
+        if (owner == address(0)) {
+            revert BalanceQueryForZeroAddress();
+        }
         return _balances[owner];
     }
 
@@ -121,10 +136,10 @@ contract ERC721Sequential is Context, ERC165, IERC721, IERC721Metadata {
         returns (address)
     {
         address owner = _tokens[tokenId];
-        require(
-            owner != address(0),
-            "ERC721: owner query for nonexistent token"
-        );
+        if(owner == address(0)) {
+            revert OwnerQueryForNonExistentToken();
+        }
+
         return owner;
     }
 
@@ -152,10 +167,9 @@ contract ERC721Sequential is Context, ERC165, IERC721, IERC721Metadata {
         override
         returns (string memory)
     {
-        require(
-            _exists(tokenId),
-            "ERC721Metadata: URI query for nonexistent token"
-        );
+        if(!_exists(tokenId)) {
+            revert URIQueryForNonExistentToken();
+        }
 
         string memory baseURI = _baseURI();
         return
@@ -178,12 +192,14 @@ contract ERC721Sequential is Context, ERC165, IERC721, IERC721Metadata {
      */
     function approve(address to, uint256 tokenId) public virtual override {
         address owner = ERC721Sequential.ownerOf(tokenId);
-        require(to != owner, "ERC721: approval to current owner");
 
-        require(
-            _msgSender() == owner || isApprovedForAll(owner, _msgSender()),
-            "ERC721: approve caller is not owner nor approved for all"
-        );
+        if (to == owner) {
+            revert ApprovalToCurrentOwner();
+        }
+
+        if (_msgSender() != owner && !isApprovedForAll(owner, _msgSender())) {
+            revert ApproveCallerIsNotOwnerNorApprovedForAll();
+        }
 
         _approve(to, tokenId);
     }
@@ -198,10 +214,9 @@ contract ERC721Sequential is Context, ERC165, IERC721, IERC721Metadata {
         override
         returns (address)
     {
-        require(
-            _exists(tokenId),
-            "ERC721: approved query for nonexistent token"
-        );
+        if(!_exists(tokenId)) {
+         revert ApprovedQueryForNonExistentToken();
+        }
 
         return _tokenApprovals[tokenId];
     }
@@ -214,7 +229,9 @@ contract ERC721Sequential is Context, ERC165, IERC721, IERC721Metadata {
         virtual
         override
     {
-        require(operator != _msgSender(), "ERC721: approve to caller");
+        if (operator == _msgSender()) {
+            revert ApproveToCaller();
+        }
 
         _operatorApprovals[_msgSender()][operator] = approved;
         emit ApprovalForAll(_msgSender(), operator, approved);
@@ -241,12 +258,10 @@ contract ERC721Sequential is Context, ERC165, IERC721, IERC721Metadata {
         address to,
         uint256 tokenId
     ) public virtual override {
-        //solhint-disable-next-line max-line-length
-        require(
-            _isApprovedOrOwner(_msgSender(), tokenId),
-            "ERC721: transfer caller is not owner nor approved"
-        );
-
+        //solhint-disable-next-line max-line-length        
+        if(!_isApprovedOrOwner(_msgSender(), tokenId)) {
+            revert TransferCallerIsNotOwnerNorApproved();
+        }
         _transfer(from, to, tokenId);
     }
 
@@ -270,10 +285,10 @@ contract ERC721Sequential is Context, ERC165, IERC721, IERC721Metadata {
         uint256 tokenId,
         bytes memory _data
     ) public virtual override {
-        require(
-            _isApprovedOrOwner(_msgSender(), tokenId),
-            "ERC721: transfer caller is not owner nor approved"
-        );
+        if ( !_isApprovedOrOwner(_msgSender(), tokenId)) {
+            revert TransferCallerIsNotOwnerNorApproved();
+        }
+
         _safeTransfer(from, to, tokenId, _data);
     }
 
@@ -302,10 +317,10 @@ contract ERC721Sequential is Context, ERC165, IERC721, IERC721Metadata {
         bytes memory _data
     ) internal virtual {
         _transfer(from, to, tokenId);
-        require(
-            _checkOnERC721Received(from, to, tokenId, _data),
-            "ERC721: transfer to non ERC721Receiver implementer"
-        );
+        
+        if (!_checkOnERC721Received(from, to, tokenId, _data)) {
+            revert TransferToNonERC721ReceiverImplementer();
+        }
     }
 
     /**
@@ -333,10 +348,10 @@ contract ERC721Sequential is Context, ERC165, IERC721, IERC721Metadata {
         virtual
         returns (bool)
     {
-        require(
-            _exists(tokenId),
-            "ERC721: operator query for nonexistent token"
-        );
+        if (!_exists(tokenId)) {
+            revert OperatorQueryForNonExistentToken();
+        }
+
         address owner = ERC721Sequential.ownerOf(tokenId);
         return (spender == owner ||
             getApproved(tokenId) == spender ||
@@ -363,10 +378,9 @@ contract ERC721Sequential is Context, ERC165, IERC721, IERC721Metadata {
      */
     function _safeMint(address to, bytes memory _data) internal virtual {
         _mint(to);
-        require(
-            _checkOnERC721Received(address(0), to, _tokens.length - 1, _data),
-            "ERC721: transfer to non ERC721Receiver implementer"
-        );
+        if (!_checkOnERC721Received(address(0), to, _tokens.length - 1, _data)) {
+            revert TransferToNonERC721ReceiverImplementer();
+        }
     }
 
     /**
@@ -382,8 +396,10 @@ contract ERC721Sequential is Context, ERC165, IERC721, IERC721Metadata {
      * Emits a {Transfer} event.
      */
     function _mint(address to) internal virtual {
-        require(to != address(0), "ERC721: mint to the zero address");
-
+        if (to == address(0)) {
+            revert MintToTheZeroAddress();
+        }
+        
         uint256 tokenId = _tokens.length;
         _beforeTokenTransfer(address(0), to, tokenId);
         _balances[to] += 1;
@@ -432,11 +448,13 @@ contract ERC721Sequential is Context, ERC165, IERC721, IERC721Metadata {
         address to,
         uint256 tokenId
     ) internal virtual {
-        require(
-            ERC721Sequential.ownerOf(tokenId) == from,
-            "ERC721: transfer of token that is not own"
-        );
-        require(to != address(0), "ERC721: transfer to the zero address");
+        if (ERC721Sequential.ownerOf(tokenId) != from) {
+            revert TransferOfTokenThatIsNotOwn();
+        }
+
+        if (to == address(0)) {
+            revert TransferToTheZeroAddress();
+        }
 
         _beforeTokenTransfer(from, to, tokenId);
 
@@ -487,9 +505,7 @@ contract ERC721Sequential is Context, ERC165, IERC721, IERC721Metadata {
                 return retval == IERC721Receiver.onERC721Received.selector;
             } catch (bytes memory reason) {
                 if (reason.length == 0) {
-                    revert(
-                        "ERC721: transfer to non ERC721Receiver implementer"
-                    );
+                    revert TransferToNonERC721ReceiverImplementer();
                 } else {
                     assembly {
                         revert(add(32, reason), mload(reason))

@@ -30,7 +30,7 @@ describe("ERC721S Enumerable", function () {
         it("reverts if index is greater then the number of tokens associated with a given owner", async () => {
             await contract.connect(minter1).mint(1);
             await expect(contract.tokenOfOwnerByIndex(minter1.address, 1))
-                .to.be.revertedWith("ERC721Enumerable: owner index out of bounds");
+                .to.be.revertedWith('OwnerIndexOutOfBounds');
         });
     });
 
