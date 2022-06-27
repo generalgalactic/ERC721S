@@ -598,6 +598,11 @@
     tweetnacl "^1.0.3"
     tweetnacl-util "^0.15.1"
 
+"@nomiclabs/hardhat-ethers@^2.0.6":
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/@nomiclabs/hardhat-ethers/-/hardhat-ethers-2.0.6.tgz#1c695263d5b46a375dcda48c248c4fba9dfe2fc2"
+  integrity sha512-q2Cjp20IB48rEn2NPjR1qxsIQBvFVYW9rFRCFq+bC4RUrn1Ljz3g4wM8uSlgIBZYBi2JMXxmOzFqHraczxq4Ng==
+
 "@nomiclabs/hardhat-ethers@npm:hardhat-deploy-ethers":
   version "0.3.0-beta.13"
   resolved "https://registry.yarnpkg.com/hardhat-deploy-ethers/-/hardhat-deploy-ethers-0.3.0-beta.13.tgz#b96086ff768ddf69928984d5eb0a8d78cfca9366"
@@ -794,13 +799,16 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@tenderly/hardhat-tenderly@^1.0.15":
-  version "1.0.15"
-  resolved "https://registry.yarnpkg.com/@tenderly/hardhat-tenderly/-/hardhat-tenderly-1.0.15.tgz#6982e4d17641b235c0aea3746253d468c7d98454"
-  integrity sha512-zkv+VC/6jx/qCJQ0/IhvP7giumi/gE9gftLUJwaLLbvmWImnM2FS4yGkmVy/NAR1nRA5ucMNQ9laZIXr82pVLQ==
+"@tenderly/hardhat-tenderly@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@tenderly/hardhat-tenderly/-/hardhat-tenderly-1.1.0.tgz#bf737fb66079a774fbcfb383a176395933923ecd"
+  integrity sha512-LrsY6RN9IB3NKvs6o8bjkWKIiKnILylLCG+JHJx3fXfGc1Uh9K0wsx1MMvwH40PgK1WRmd9QVaFfXy6HLmXyqg==
   dependencies:
+    "@nomiclabs/hardhat-ethers" "^2.0.6"
     axios "^0.21.1"
+    ethers "^5.6.8"
     fs-extra "^9.0.1"
+    hardhat-deploy "^0.11.10"
     js-yaml "^3.14.0"
 
 "@truffle/abi-utils@^0.2.7":
@@ -4231,7 +4239,7 @@ ethers@^4.0.32, ethers@^4.0.40:
     uuid "2.0.1"
     xmlhttprequest "1.8.0"
 
-ethers@^5.0.1, ethers@^5.0.13, ethers@^5.0.2, ethers@^5.5.2, ethers@^5.5.3, ethers@^5.6.9:
+ethers@^5.0.1, ethers@^5.0.13, ethers@^5.0.2, ethers@^5.5.2, ethers@^5.5.3, ethers@^5.6.8, ethers@^5.6.9:
   version "5.6.9"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.6.9.tgz#4e12f8dfcb67b88ae7a78a9519b384c23c576a4d"
   integrity sha512-lMGC2zv9HC5EC+8r429WaWu3uWJUCgUCt8xxKCFqkrFuBDZXDYIdzDUECxzjf2BMF8IVBByY1EBoGSL3RTm8RA==
