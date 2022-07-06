@@ -4,7 +4,7 @@
   "license": "MIT",
   "devDependencies": {
     "cli-interact": "^0.1.9",
-    "eslint": "^8.18.0",
+    "eslint": "^8.19.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-babel": "^5.3.1",
