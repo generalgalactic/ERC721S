@@ -17,7 +17,7 @@
     "@openzeppelin/contracts": "^4.7.3",
     "@openzeppelin/test-helpers": "^0.5.16",
     "@tenderly/hardhat-tenderly": "^1.1.6",
-    "chai": "^4.2.0",
+    "chai": "^4.3.7",
     "dotenv": "^16.0.3",
     "ethereum-waffle": "^3.4.4",
     "ethers": "^5.7.1",
